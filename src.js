@@ -2,9 +2,11 @@
 const lowerDisplay    = document.querySelector('.lower-screen');
 const clearButton     = document.querySelector('.clear');
 const equalButton     = document.querySelector('.enter');
+const deleteButton    = document.querySelector('.del');
 const numberButtons   = document.querySelectorAll('.number');
 const operatorButtons = document.querySelectorAll('.operator');
 
+let lowerDisplayStr   = "";
 let lowerDisplayValue = 0;
 let totalValue        = 0;
 let storedOperator    = "";
@@ -34,6 +36,7 @@ function operate(operator, num1, num2) {
 }
 
 function clearLower() {
+    lowerDisplayStr = "";
     lowerDisplayValue = 0;
     lowerDisplay.innerHTML = lowerDisplayValue;
 }
@@ -42,16 +45,20 @@ function clearLower() {
 // that adds to the display value.
 numberButtons.forEach((button) => {
     button.addEventListener('click', () => {
-        lowerDisplayValue = lowerDisplayValue * 10 + parseInt(button.innerHTML);
-        lowerDisplay.innerHTML = lowerDisplayValue.toString();
+        if(lowerDisplayStr.length < 16) {
+            lowerDisplayStr = lowerDisplayStr + button.innerHTML;
+            lowerDisplayValue = parseFloat(lowerDisplayStr);
+            lowerDisplay.innerHTML = lowerDisplayStr;
+        }
+
     });
 });
 
 
 
-// Grab all the operator buttons and add event listeners.
-// The lowerDisplayValue will be stored in lowerDisplayStorage
-// while the operator will be stored in operator storage.
+// Add event listeners to all operator buttons.
+// Store lowerDisplayValue in num1.
+// Store operator in storedOperator.
 // operatorPressed will be set to true, preventing operator to be pressed again.
 
 operatorButtons.forEach((button) => {
@@ -93,7 +100,8 @@ equalButton.addEventListener('click', ()=> {
         num2 = lowerDisplayValue;
         totalValue = operate(storedOperator, num1, num2);
         lowerDisplayValue = totalValue;
-        lowerDisplay.innerHTML = totalValue.toString();
+        lowerDisplayStr = totalValue.toString();
+        lowerDisplay.innerHTML = lowerDisplayStr;
 
     
         num1 = 0;
@@ -105,6 +113,7 @@ equalButton.addEventListener('click', ()=> {
 // Clear button sets lowerDisplayValue to 0 and updates the screen.
 clearButton.addEventListener('click', () => {
     clearLower();
+    lowerDisplayStr = "";
     lowerDisplayValue = 0;
     totalValue = 0;
     storedOperator = "";
@@ -114,4 +123,18 @@ clearButton.addEventListener('click', () => {
 });
 
 
+// Adds event listener to Del Button which truncates the last char on
+// lowerDisplayStr and subsequently updating lowerDisplayValue
+deleteButton.addEventListener('click', ()=> {
+    if(lowerDisplayStr.length > 0) {
+        lowerDisplayStr = lowerDisplayStr.slice(0, lowerDisplayStr.length-1);
+        lowerDisplayValue = parseFloat(lowerDisplayStr);
+        lowerDisplay.innerHTML = lowerDisplayStr;
+    }
+    else {
+        lowerDisplayStr = "0";
+        lowerDisplayValue = 0;
+        lowerDisplay.innerHTML = lowerDisplayStr;
+    }
+});
 
