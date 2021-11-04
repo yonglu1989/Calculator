@@ -38,15 +38,23 @@
 }
 
 .upper-screen, .lower-screen {
-    width: 360px;
+    
+    width: 340px;
     height: 90px;
+    /* border: solid; */
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    font-size: 28px;
+    border-radius: 8px;
 }
 
 .upper-screen {
 
 }
 .lower-screen {
-    
+
+    /* padding: 14px; */
 }
 .buttons-holder {
     width: 360px;
