@@ -6,7 +6,7 @@ const deleteButton    = document.querySelector('.del');
 const numberButtons   = document.querySelectorAll('.number');
 const operatorButtons = document.querySelectorAll('.operator');
 
-let lowerDisplayStr   = "";
+let lowerDisplayStr   = "0";
 let lowerDisplayValue = 0;
 let totalValue        = 0;
 let storedOperator    = "";
@@ -36,7 +36,7 @@ function operate(operator, num1, num2) {
 }
 
 function clearLower() {
-    lowerDisplayStr = "";
+    lowerDisplayStr = "0";
     lowerDisplayValue = 0;
     lowerDisplay.innerHTML = lowerDisplayValue;
 }
@@ -45,12 +45,12 @@ function clearLower() {
 // that adds to the display value.
 numberButtons.forEach((button) => {
     button.addEventListener('click', () => {
-        if(lowerDisplayStr.length < 16) {
+        if(lowerDisplayStr.length < 16 && !(lowerDisplayValue == 0 && parseInt(button.innerHTML)== 0)) {
             lowerDisplayStr = lowerDisplayStr + button.innerHTML;
+            lowerDisplayStr = lowerDisplayStr.replace(/^0+/, '');
             lowerDisplayValue = parseFloat(lowerDisplayStr);
             lowerDisplay.innerHTML = lowerDisplayStr;
         }
-
     });
 });
 
@@ -113,7 +113,7 @@ equalButton.addEventListener('click', ()=> {
 // Clear button sets lowerDisplayValue to 0 and updates the screen.
 clearButton.addEventListener('click', () => {
     clearLower();
-    lowerDisplayStr = "";
+    lowerDisplayStr = "0";
     lowerDisplayValue = 0;
     totalValue = 0;
     storedOperator = "";
@@ -126,7 +126,7 @@ clearButton.addEventListener('click', () => {
 // Adds event listener to Del Button which truncates the last char on
 // lowerDisplayStr and subsequently updating lowerDisplayValue
 deleteButton.addEventListener('click', ()=> {
-    if(lowerDisplayStr.length > 0) {
+    if(lowerDisplayStr.length > 0 && lowerDisplayValue != 0) {
         lowerDisplayStr = lowerDisplayStr.slice(0, lowerDisplayStr.length-1);
         lowerDisplayValue = parseFloat(lowerDisplayStr);
         lowerDisplay.innerHTML = lowerDisplayStr;
