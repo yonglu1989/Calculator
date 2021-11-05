@@ -1,4 +1,5 @@
 // Initialization
+const upperDisplay    = document.querySelector('.upper-screen');
 const lowerDisplay    = document.querySelector('.lower-screen');
 const clearButton     = document.querySelector('.clear');
 const equalButton     = document.querySelector('.enter');
@@ -16,7 +17,10 @@ let num2              = 0;
 let storedOperator    = "";
 let operatorSign      = "";
 let lowerDisplayStr   = "0";
+let upperDisplayStr   = lowerDisplayStr;
 let operatorPressed   = false;
+
+upperDisplay.innerHTML = upperDisplayStr;
 
 function add(num1, num2) {
     return num1 + num2;
@@ -44,6 +48,21 @@ function clearLower() {
     lowerDisplay.innerHTML = lowerDisplayValue;
 }
 
+function clearUpper() {
+    upperDisplayStr = "0";
+    upperDisplay.innerHTML = upperDisplayStr;
+}
+
+function updateUpper1(num1, operator) {
+    upperDisplayStr = num1 + operator;
+    upperDisplay.innerHTML = upperDisplayStr;
+}
+
+function updateUpper2(num2) {
+    upperDisplayStr = upperDisplayStr + num2 + " ="; 
+    upperDisplay.innerHTML = upperDisplayStr;
+}
+
 // Grab all the buttons with class number and add a listener
 // that adds to the display value.
 numberButtons.forEach((button) => {
@@ -56,6 +75,8 @@ numberButtons.forEach((button) => {
             }
             lowerDisplayValue = parseFloat(lowerDisplayStr);
             lowerDisplay.innerHTML = lowerDisplayStr;
+            // upperDisplayStr = lowerDisplayStr;
+            // upperDisplay.innerHTML = upperDisplayStr;
         }
     });
 });
@@ -93,7 +114,9 @@ operatorButtons.forEach((button) => {
                 default:
                     break;
             }
+
             clearLower();
+            updateUpper1(num1, operatorSign);
         }
     });
 });
@@ -109,7 +132,7 @@ equalButton.addEventListener('click', ()=> {
         lowerDisplayStr = lowerDisplayValue.toString();
         lowerDisplay.innerHTML = lowerDisplayStr;
 
-    
+        updateUpper2(num2);
         num1 = 0;
         operatorPressed = false;
     }
@@ -119,6 +142,7 @@ equalButton.addEventListener('click', ()=> {
 // Clear button sets lowerDisplayValue to 0 and updates the screen.
 clearButton.addEventListener('click', () => {
     clearLower();
+    clearUpper();
     lowerDisplayStr = "0";
     lowerDisplayValue = 0;
     totalValue = 0;
