@@ -3,16 +3,19 @@ const lowerDisplay    = document.querySelector('.lower-screen');
 const clearButton     = document.querySelector('.clear');
 const equalButton     = document.querySelector('.enter');
 const deleteButton    = document.querySelector('.del');
+const negButton       = document.querySelector('.negative');
+const dotButton       = document.querySelector('.dot');
 const numberButtons   = document.querySelectorAll('.number');
 const operatorButtons = document.querySelectorAll('.operator');
 
-let lowerDisplayStr   = "0";
+
 let lowerDisplayValue = 0;
 let totalValue        = 0;
-let storedOperator    = "";
-let operatorSign      = "";
 let num1              = 0;
 let num2              = 0;
+let storedOperator    = "";
+let operatorSign      = "";
+let lowerDisplayStr   = "0";
 let operatorPressed   = false;
 
 function add(num1, num2) {
@@ -45,21 +48,24 @@ function clearLower() {
 // that adds to the display value.
 numberButtons.forEach((button) => {
     button.addEventListener('click', () => {
-        if(lowerDisplayStr.length < 16 && !(lowerDisplayValue == 0 && parseInt(button.innerHTML)== 0)) {
+        if(lowerDisplayStr.length < 16) {
+
             lowerDisplayStr = lowerDisplayStr + button.innerHTML;
-            lowerDisplayStr = lowerDisplayStr.replace(/^0+/, '');
+            if(!lowerDisplayStr.includes('.')) {
+                lowerDisplayStr = lowerDisplayStr.replace(/^0/, '');
+            }
             lowerDisplayValue = parseFloat(lowerDisplayStr);
             lowerDisplay.innerHTML = lowerDisplayStr;
         }
     });
 });
 
-
+// && !(lowerDisplayValue == 0 && parseInt(button.innerHTML)== 0)
 
 // Add event listeners to all operator buttons.
 // Store lowerDisplayValue in num1.
 // Store operator in storedOperator.
-// operatorPressed will be set to true, preventing operator to be pressed again.
+// operatorPressed set to true, preventing operator to be pressed again.
 
 operatorButtons.forEach((button) => {
     button.addEventListener('click', () => {
@@ -126,7 +132,7 @@ clearButton.addEventListener('click', () => {
 // Adds event listener to Del Button which truncates the last char on
 // lowerDisplayStr and subsequently updating lowerDisplayValue
 deleteButton.addEventListener('click', ()=> {
-    if(lowerDisplayStr.length > 0 && lowerDisplayValue != 0) {
+    if(lowerDisplayStr.length > 0) {
         lowerDisplayStr = lowerDisplayStr.slice(0, lowerDisplayStr.length-1);
         lowerDisplayValue = parseFloat(lowerDisplayStr);
         lowerDisplay.innerHTML = lowerDisplayStr;
@@ -138,3 +144,19 @@ deleteButton.addEventListener('click', ()=> {
     }
 });
 
+// Negative button multiplies the lowerDisplayValue by -1 and updates the lowerDisplayStr
+negButton.addEventListener('click', ()=> {
+    lowerDisplayValue = lowerDisplayValue * -1;
+    lowerDisplayStr = lowerDisplayValue.toString();
+    lowerDisplay.innerHTML = lowerDisplayStr;
+});
+
+
+// Dot Button adds a dot to the current displayValue
+//  
+dotButton.addEventListener('click', ()=> {
+    if(!(lowerDisplayStr.includes('.'))) {
+        lowerDisplayStr = lowerDisplayStr + ".";
+        lowerDisplay.innerHTML = lowerDisplayStr;
+    }
+});
