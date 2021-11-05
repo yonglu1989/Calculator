@@ -104,9 +104,9 @@ operatorButtons.forEach((button) => {
 equalButton.addEventListener('click', ()=> {
     if(operatorPressed == true) {
         num2 = lowerDisplayValue;
-        totalValue = operate(storedOperator, num1, num2);
+        totalValue = parseFloat(operate(storedOperator, num1, num2).toFixed(3));
         lowerDisplayValue = totalValue;
-        lowerDisplayStr = totalValue.toString();
+        lowerDisplayStr = lowerDisplayValue.toString();
         lowerDisplay.innerHTML = lowerDisplayStr;
 
     
